@@ -1,0 +1,57 @@
+﻿@page "/add"
+
+@using AuctionPortal.Data
+@inject AuctionService _auctionService
+@inject NavigationManager _navigationManager
+
+<h1>Lista Aukcji</h1>
+
+<p>Super okazje</p>
+
+
+<EditForm Model=@_model OnValidSubmit=@OnSubmitted>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>
+            Nazwa przedmiotu
+            <InputText @bind-Value=_model.ItemName class="form-control"></InputText>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            Cena
+            <InputNumber @bind-Value=_model.Price class="form-control"></InputNumber>
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Kategoria
+            <InputSelect @bind-Value="_model.Category" class="form-control">
+                <option selected disabled value>Wybierz kategorię</option>
+                @foreach (var category in CategoryManager.GetCategories())
+                {
+                    <option value="@category.CategoryName">@category.CategoryDisplayName</option>
+                }
+            </InputSelect>
+        </label>
+    </div>
+    <form class="form-check">
+        <InputCheckbox id="isSpecialCheck" class="form-check-input" @bind-Value=@_model.IsSpecial></InputCheckbox>
+        <label class="form-check-label" for="isSpecialCheck">Wyróżnij</label>
+    </form>
+
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+</EditForm>
+@code {
+    readonly Item _model = new();
+
+    async void OnSubmitted()
+    {
+        await _auctionService.AddItem(_model);
+        _navigationManager.NavigateTo("auctions");
+    }
+    
+
+}

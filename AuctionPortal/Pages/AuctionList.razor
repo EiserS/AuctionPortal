@@ -1,0 +1,49 @@
+﻿@page "/auctions"
+
+@using AuctionPortal.Data
+@inject AuctionService _auctionService
+
+<h1>Lista Aukcji</h1>
+
+<p>Super okazje</p>
+
+@if (_items == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Przedmiot</th>
+            <th>Kategoria</th>
+            <th>Cena</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in _items)
+        {
+            <tr class="@(item.IsSpecial ? "IsSpecial":"")">
+                <td>@item.ItemName</td>
+                <td>@CategoryManager.GetCategoryDisplayName(item.Category)</td>
+                <td>@item.Price PLN</td>
+                <td><a class="btn btn-primary" href="payment/@item.Id">Kup mnie :D</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@code {
+    private Item[] _items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var beforeSorted = (await _auctionService.GetAuctionsAsync()).ToList();
+        _items = beforeSorted.OrderBy(o => !o.IsSpecial).ThenBy(n => n.ItemName).ToArray();
+    }
+
+}

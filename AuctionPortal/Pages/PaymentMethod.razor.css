@@ -1,0 +1,28 @@
+﻿[data-error="true"] {
+    display: none;
+}
+[data-error="false"] {
+    display: block;
+}
+[data-error=""] {
+    display: none;
+}
+
+
+[data-success=""] {
+    display: none;
+}
+[data-success="true"] {
+    display: block;
+}
+[data-success="false"] {
+    display: none;
+}
+
+
+[data-before-paid="false"] {
+    display: none;
+}
+[data-before-paid="true"] {
+    display: block;
+}

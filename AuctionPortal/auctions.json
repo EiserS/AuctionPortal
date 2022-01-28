@@ -1,0 +1,44 @@
+[
+  {
+    "Id": 1,
+    "ItemName": "iPhone 12 Pro\t",
+    "Category": "electronics",
+    "Price": 4600.0,
+    "IsSpecial": true
+  },
+  {
+    "Id": 2,
+    "ItemName": "Konsola Playstation 5",
+    "Category": "electronics",
+    "Price": 2899.0,
+    "IsSpecial": false
+  },
+  {
+    "Id": 3,
+    "ItemName": "Bluza Adidas Męska Szara",
+    "Category": "clothes",
+    "Price": 249.0,
+    "IsSpecial": true
+  },
+  {
+    "Id": 4,
+    "ItemName": "Spodnie Wrangler Arizona\t",
+    "Category": "clothes",
+    "Price": 189.0,
+    "IsSpecial": false
+  },
+  {
+    "Id": 5,
+    "ItemName": "Basen ogrodowy Premium",
+    "Category": "household",
+    "Price": 1199.0,
+    "IsSpecial": false
+  },
+  {
+    "Id": 6,
+    "ItemName": "Krzesło skandynwskie granatowe",
+    "Category": "household",
+    "Price": 88.0,
+    "IsSpecial": false
+  }
+]

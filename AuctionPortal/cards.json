@@ -1,0 +1,22 @@
+[
+  {
+    "CardName": "Visa",
+    "CardLimit": 100.0,
+    "CardNumber": "0001"
+  },
+  {
+    "CardName": "Mastercard",
+    "CardLimit": 10000.0,
+    "CardNumber": "0002"
+  },
+  {
+    "CardName": "American Express",
+    "CardLimit": 3000.0,
+    "CardNumber": "0003"
+  },
+  {
+    "CardName": "Diners Club",
+    "CardLimit": 1000.0,
+    "CardNumber": "0004"
+  }
+]

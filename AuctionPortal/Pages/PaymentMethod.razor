@@ -1,0 +1,109 @@
+﻿@page "/payment/{ItemId}"
+
+@using AuctionPortal.Data
+@inject AuctionService _auctionService
+@inject NavigationManager _navManager
+
+<h1>Lista Aukcji</h1>
+
+<p>Super okazje</p>
+
+@if (_item == null)
+{
+    <p>
+        <em>Nie można znaleźć przedmiotu</em>
+    </p>
+}
+else
+{
+    <div data-before-paid=@_beforePaid>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Przedmiot</th>
+                <th>Kategoria</th>
+                <th>Cena</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="@(_item.IsSpecial ? "IsSpecial":"")">
+                <td>@_item.ItemName</td>
+                <td>@CategoryManager.GetCategoryDisplayName(_item.Category)</td>
+                <td>@_item.Price PLN</td>
+            </tr>
+            </tbody>
+        </table>
+        <EditForm Model=@_model OnSubmit=@FormSubmitted>
+            <div class="form-group">
+                <InputText @bind-Value=_model.CardNumber class="form-control"></InputText>
+                <input type="submit" class="btn btn-primary" value="Zapłać"/>    
+            </div>
+        </EditForm>
+    </div>
+    <div data-error=@_isNoError>
+        Błąd: @_errorReason
+    </div>
+    <div data-success=@_isNoError>
+        Zapłaciłeś za zakupione przedmioty. @_successReason
+        <br/>
+        <a href="auctions" class="btn btn-primary">Zobacz inne aukcje</a>
+    </div>
+}
+@code {
+
+    async void FormSubmitted()
+    {
+        var cardInfo = CardManager.GetCardInfoByNumber(_model.CardNumber);
+        if (cardInfo != null)
+        {
+            if (cardInfo.CardLimit - _item.Price > 0)
+            {
+                _beforePaid = "false";
+                _isNoError = "true";
+                _successReason = $"Nazwa karty: {cardInfo.CardName}";
+                await _auctionService.PurchaseItem(_item.Id, _model.CardNumber); 
+            }
+            else
+            {
+                _isNoError = "false";
+                _errorReason = "Brak środków na karcie";
+            }
+        }
+        else
+        {
+            _isNoError = "false";
+            _errorReason = "Błędny numer karty";
+        }
+             
+    }
+
+    class CardNumberModel
+    {
+        public string CardNumber { get; set; }
+    }
+
+    readonly CardNumberModel _model = new CardNumberModel();
+    private Item _item;
+
+    private string _isNoError = "";
+    private string _errorReason = "";
+    private string _successReason = "";
+    private string _beforePaid = "true";
+    [Parameter]
+    public string? ItemId { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(ItemId, out var j))
+        {
+            var items = await _auctionService.GetAuctionsAsync();
+
+            foreach (var item in items)
+            {
+                if (item.Id != j) continue;
+                _item = item;
+                return;
+            }
+        }
+    }
+}
